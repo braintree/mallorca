@@ -53,8 +53,8 @@ response code of 200 indicates a healthy connection, 503 indicates connection pr
 Enables changing connection pool settings without having to restart Mallorca. Accepts a payload
 of either a JSON object or form encoded key-values:
 
-* `max` - Maximum number of connections to the upstream server
-* `keepalive` - Number of connections to keep open when no more requests are queued
+`max` - Maximum number of connections to the upstream server
+`keepalive` - Number of connections to keep open when no more requests are queued
 
     GET /\_mallorca/uncaught\_error
 

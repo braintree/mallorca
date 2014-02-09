@@ -1,0 +1,28 @@
+{
+  "name": "mallorca",
+  "version": "0.3.4",
+  "author": "Braintree <code@braintreepayments.com> (http://www.braintreepayments.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/braintree/mallorca.git"
+  },
+  "preferGlobal": true,
+  "devDependencies": {
+    "mocha": "1.15.x",
+    "chai": "1.8.x",
+    "request": "2.30.x"
+  },
+  "dependencies": {
+    "optimist": "0.6.x",
+    "agentkeepalive": "0.2.x",
+    "syslogudp": "0.0.5"
+  },
+  "scripts": {
+    "test": "mocha --timeout 3000",
+    "watch": "mocha --timeout 3000 --watch"
+  },
+  "main": "./lib/main",
+  "bin": {
+    "mallorca": "./bin/mallorca"
+  }
+}

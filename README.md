@@ -28,11 +28,7 @@ Ensure you have the following dependencies installed and in your PATH:
 
 Then, you should be able to run the tests:
 
-    $ rake
-
-Or, to leave them running in watch mode:
-
-    $ rake test:watch
+    $ npm test
 
 Finally, to launch Mallorca:
 

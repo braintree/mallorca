@@ -41,25 +41,26 @@ Finally, to launch Mallorca:
 The following routes are reserved for the operation of the Mallorca proxy, and are not
 proxied to the upstream web server.
 
-    GET /\_mallorca/heartbeat
+    GET /_mallorca/heartbeat
 
 Indicates whether Mallorca can consistently maintain its connection to the upstream server. A
 response code of 200 indicates a healthy connection, 503 indicates connection problems.
 
-    PUT /\_mallorca/connection\_pool
+    PUT /_mallorca/connection_pool
 
 Enables changing connection pool settings without having to restart Mallorca. Accepts a payload
 of either a JSON object or form encoded key-values:
 
 `max` - Maximum number of connections to the upstream server
+
 `keepalive` - Number of connections to keep open when no more requests are queued
 
-    GET /\_mallorca/uncaught\_error
+    GET /_mallorca/uncaught_error
 
 Simulates an internal error within the Mallorca proxy, does not respond. You must have set the
 allow-error-routes command line switch to use this route.
 
-    GET /\_mallorca/stat
+    GET /_mallorca/stat
 
 Provides statistics for the connection pool and latencies of recent requests to the upstream server.
 

@@ -2,6 +2,8 @@
 
 Man-in-the-middle proxy for HTTPS with SSL verification and connection pooling/keep-alive.
 
+[![Build Status](https://travis-ci.org/braintree/mallorca.png?branch=master)](https://travis-ci.org/braintree/mallorca)
+
 ## Installation
 
     $ npm -g install mallorca

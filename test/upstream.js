@@ -12,9 +12,11 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 var TESTSERVER_PORT = 9001;
 var TESTSERVER_URL = url.parse('https://localhost:' + TESTSERVER_PORT);
 
+var statsDClient = require('../lib/statsd-client').create();
+
 describe('Upstream', function () {
   describe('using a default testserver and no agent', function () {
-    var upstream = new Upstream(TESTSERVER_URL);
+    var upstream = new Upstream(TESTSERVER_URL, statsDClient);
     var server = testServer.build();
 
     before(function() { server.listen(TESTSERVER_PORT); });
@@ -78,7 +80,7 @@ describe('Upstream', function () {
 
   describe('using a testserver with a delay and max sockets set', function () {
     var MAX_SOCKETS = 6;
-    var upstream = new Upstream(TESTSERVER_URL, {
+    var upstream = new Upstream(TESTSERVER_URL, statsDClient, {
       maxSockets: MAX_SOCKETS
     });
     var server = testServer.build({ delayResponse: 300 });
@@ -115,7 +117,7 @@ describe('Upstream', function () {
   describe('using a test with delay longer than the Upstream timeout', function () {
     var delayResponse = 200;
     var server = testServer.build({ delayResponse: delayResponse });
-    var upstream = new Upstream(TESTSERVER_URL);
+    var upstream = new Upstream(TESTSERVER_URL, statsDClient);
     upstream.setTimeout(delayResponse - 50);
 
     before(function () { server.listen(TESTSERVER_PORT); });
@@ -136,7 +138,7 @@ describe('Upstream', function () {
 
     before(function(done) {
       testServerChildProcess = testServer.forkChild(TESTSERVER_PORT, { delayResponse: 50 }, done);
-      upstream = new Upstream(TESTSERVER_URL, {
+      upstream = new Upstream(TESTSERVER_URL, statsDClient, {
         maxSockets: MAX_SOCKETS,
         maxFreeSockets: KEEP_ALIVE,
         keepAlive: true
@@ -203,7 +205,7 @@ describe('Upstream', function () {
 
     before(function(done) {
       testServerChildProcess = testServer.forkChild(TESTSERVER_PORT, { delayResponse: 10 }, done);
-      upstream = new Upstream(TESTSERVER_URL, {
+      upstream = new Upstream(TESTSERVER_URL, statsDClient, {
         maxSockets: 4,
         maxFreeSockets: 2,
         keepAlive: true
@@ -278,7 +280,7 @@ describe('Upstream', function () {
 
     before(function(done) {
       testServerChildProcess = testServer.forkChild(TESTSERVER_PORT, done);
-      upstream = new Upstream(TESTSERVER_URL, { keepAlive: true });
+      upstream = new Upstream(TESTSERVER_URL, statsDClient, { keepAlive: true });
     });
 
     describe('then sending a request and setting it to close the connection', function() {
@@ -325,7 +327,7 @@ describe('Upstream', function () {
 
     before(function(done) {
       testServerChildProcess = testServer.forkChild(TESTSERVER_PORT, { clientCertificate: CLIENT_CERT }, done);
-      upstream = new Upstream(TESTSERVER_URL, {
+      upstream = new Upstream(TESTSERVER_URL, statsDClient, {
         cert: fs.readFileSync(CLIENT_CERT),
         key: fs.readFileSync("test/keys/client.key")
       });
@@ -339,7 +341,7 @@ describe('Upstream', function () {
     });
 
     it('rejects unsigned requests', function(done) {
-      var upstream = new Upstream(TESTSERVER_URL, { });
+      var upstream = new Upstream(TESTSERVER_URL, statsDClient, {});
       upstream.request({ uri: '/' }, function (err, resp) {
         assert.equal(resp.statusCode, 401);
         done();

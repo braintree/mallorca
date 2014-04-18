@@ -15,7 +15,8 @@
   "dependencies": {
     "optimist": "0.6.x",
     "agentkeepalive": "0.2.x",
-    "syslogudp": "0.0.5"
+    "syslogudp": "0.0.5",
+    "node-statsd": "0.0.7"
   },
   "scripts": {
     "test": "mocha --timeout 3000",

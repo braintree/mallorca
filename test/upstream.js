@@ -114,6 +114,34 @@ describe('Upstream', function () {
     after(function () { server.close(); });
   });
 
+  describe('using a test server with a response delay set and allowing per-request timeouts', function () {
+    var delayResponse = 200;
+    var server = testServer.build({ delayResponse: delayResponse });
+    var upstream = new Upstream(TESTSERVER_URL, statsDClient);
+    upstream.allowPerRequestTimeout();
+
+    before(function () { server.listen(TESTSERVER_PORT); });
+
+    it('yields a timeout error when the request timeout header is less than the response delay', function (done) {
+      upstream.request({ uri: '/', headers: {'X-Mallorca-Timeout': delayResponse - 100} }, function (err) {
+        assert.ok(err);
+        assert.equal(err.message, 'Request Timeout');
+        done();
+      });
+    });
+
+    it('successfully responds when the request timeout header is greater than the response delay', function (done) {
+      var request = { uri: '/', headers: {'X-Mallorca-Timeout': delayResponse + 100} };
+      upstream.request(request, function (err, response) {
+        assert.notOk(err);
+        assert.equal(response.statusCode, 200);
+        done();
+      });
+    });
+
+    after(function () { server.close(); });
+  });
+
   describe('using a test with delay longer than the Upstream timeout', function () {
     var delayResponse = 200;
     var server = testServer.build({ delayResponse: delayResponse });

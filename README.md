@@ -26,7 +26,6 @@ Ensure you have the following dependencies installed and in your PATH:
 
 * node (version > 0.10 should do)
 * npm
-* rake
 
 Then, you should be able to run the tests:
 

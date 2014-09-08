@@ -78,6 +78,32 @@ describe('Upstream', function () {
     after(function() { server.close(); });
   });
 
+  describe('using a default testserver with agent forwarding', function () {
+    var upstream = new Upstream(TESTSERVER_URL, statsDClient, {
+      forwardAgent: true
+    });
+    var server = testServer.build();
+
+    before(function() { server.listen(TESTSERVER_PORT); });
+
+    it ('forwards the agent', function (done) {
+      var opts = {
+        uri: '/foo',
+        headers: {
+          'user-agent': 'testAgent'
+        }
+      };
+      upstream.request(opts, function (err, resp, body) {
+        if (err) { return done(err); }
+
+        assert.include(body, 'user-agent => testAgent');
+        done();
+      });
+    });
+
+    after(function() { server.close(); });
+  });
+
   describe('using a testserver with a delay and max sockets set', function () {
     var MAX_SOCKETS = 6;
     var upstream = new Upstream(TESTSERVER_URL, statsDClient, {

@@ -67,6 +67,17 @@ describe('ProxyServer', function() {
       });
     });
 
+    it ('sets X-Proxy-Server to the hostname', function(done) {
+      fakeUpstream.request = function (_, cb) {
+        cb(function() {});
+      };
+      var hostname = require("os").hostname();
+      request.get('https://localhost:9002', function(err, response, body) {
+        assert.equal(hostname, response.headers['x-proxy-server']);
+        done();
+      });
+    });
+
     afterEach(function() {
       fakeUpstream.request = originalRequestMethod;
     });

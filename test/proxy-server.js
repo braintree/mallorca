@@ -78,7 +78,7 @@ describe('ProxyServer', function() {
 
   describe('#shutDown()', function() {
 
-    beforeEach(function () { 
+    beforeEach(function () {
       server.listen(9002);
       assert.isFalse(server.shuttingDown);
     });
@@ -118,7 +118,7 @@ describe('ProxyServer', function() {
   });
 
   describe("reserved URL routes", function() {
-    beforeEach(function () { 
+    beforeEach(function () {
       server.listen(9002);
       assert.isFalse(server.shuttingDown);
     });

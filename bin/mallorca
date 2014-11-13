@@ -4,6 +4,8 @@ var path = require('path');
 var fs = require('fs');
 var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
 var Mallorca = require(lib + '/mallorca');
+var Logger = require(lib + '/logger');
+var log = require(lib + '/log');
 
 try {
   var argv = require(lib + '/command-line-arguments').parseAndValidate(process.argv);
@@ -16,30 +18,18 @@ if (argv.pidFile != null) {
   fs.writeFileSync(argv.pidFile, "" + process.pid + "\n");
 }
 
-var logger; 
-if (argv.useSyslog) {
-  var syslog = require('syslogudp');
-  logger = syslog.createClient(parseInt(argv.syslogPort, 10), argv.syslogHost, { name: argv.programName });
-} else {
-  logger = require(lib + '/stdio-logger');
-  logger.setup({ programName: argv.programName });
-}
-
-process.on('log', function (level, msg, requestID) {
-  logger[level](msg, requestID);
-});
-
+var logger = new Logger(process, argv);
 
 if (argv.skipUpstreamSSLVerification) {
-  logger.info("Warning: skipping SSL verification!");
+  log.info("Warning: skipping SSL verification!");
 }
 
 var mallorca = new Mallorca(argv);
 
 process.on('uncaughtException', function (err) {
-  logger.error("Uncaught exception: " + err.message + "\n" + err.stack);
+  log.error("Uncaught exception: " + err.message + "\n" + err.stack);
   mallorca.stop(function () {
-    logger.info("Shutting down now...");
+    log.info("Shutting down now...");
     process.exit(2);
   });
 });

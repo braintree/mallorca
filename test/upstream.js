@@ -1,6 +1,5 @@
 var inspect = require('util').inspect;
 var url = require('url');
-var childProcess = require('child_process');
 var assert = require('chai').assert;
 var Upstream = require('../lib/upstream');
 var testServer = require('./helpers/testserver');
@@ -34,6 +33,7 @@ describe('Upstream', function () {
         upstream.request(opts, function (err, resp, body) {
           if (err) { return done(err); }
 
+          body = body.toString();
           assert.notInclude(body, 'user-agent => Abc123');
           assert.include(body, 'user-agent => Mallorca');
           done();
@@ -52,6 +52,7 @@ describe('Upstream', function () {
         upstream.request(opts, function (err, resp, body) {
           if (err) { return done(err); }
 
+          body = body.toString();
           assert.notInclude(body, 'host => testserver');
           assert.include(body, 'host => localhost');
           done();
@@ -68,6 +69,7 @@ describe('Upstream', function () {
         };
 
         upstream.request(opts, function (err, resp, body) {
+          body = body.toString();
           assert.notOk(err);
           assert.include(body, REQ_BODY);
           done();
@@ -96,6 +98,7 @@ describe('Upstream', function () {
       upstream.request(opts, function (err, resp, body) {
         if (err) { return done(err); }
 
+        body = body.toString();
         assert.include(body, 'user-agent => testAgent');
         done();
       });

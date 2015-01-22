@@ -1,6 +1,6 @@
 {
   "name": "mallorca",
-  "version": "0.3.12",
+  "version": "0.3.13",
   "author": "Braintree <code@braintreepayments.com> (http://www.braintreepayments.com)",
   "repository": {
     "type": "git",
@@ -22,7 +22,6 @@
     "test": "mocha --timeout 3000",
     "watch": "mocha --timeout 3000 --watch"
   },
-  "main": "./lib/main",
   "bin": {
     "mallorca": "./bin/mallorca"
   }

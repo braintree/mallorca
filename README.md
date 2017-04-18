@@ -2,7 +2,13 @@
 
 Man-in-the-middle proxy for HTTPS with SSL verification and connection pooling/keep-alive.
 
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![Build Status](https://travis-ci.org/braintree/mallorca.png?branch=master)](https://travis-ci.org/braintree/mallorca)
+
+## DEPRECATED
+
+Braintree no longer uses or maintains this project. It remains available for
+research and derivative works, subject to the project's license.
 
 ## Installation
 
